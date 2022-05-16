@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id             Int              @id @default(autoincrement())
+  name           String
+  price          Decimal          @db.Decimal(10, 2)
+  productColor   ProductColor[]
+  ProductSize    ProductSize[]
+  ProductFeature ProductFeature[]
+  cart           CartItem[]
+
+  Like Like[]
+  @@map("products")
+}
+
+model Color {
+  id           Int            @id @default(autoincrement())
+  name         String
+  productColor ProductColor[]
+
+  @@map("colors")
+}
+
+model ProductColor {
+  id           Int            @id @default(autoincrement())
+  productId    Int?           @map("product_id")
+  colorId      Int?           @map("color_id")
+  isDefault    Boolean        @map("is_default")
+  product      Product?       @relation(fields: [productId], references: [id], onDelete: SetNull)
+  color        Color?         @relation(fields: [colorId], references: [id], onDelete: SetNull)
+  ProductImage ProductImage[]
+
+  @@map("product_colors")
+}
+
+model Size {
+  id          Int           @id @default(autoincrement())
+  name        String
+  ProductSize ProductSize[]
+
+  @@map("sizes")
+}
+
+model ProductSize {
+  id        Int      @id @default(autoincrement())
+  productId Int?     @map("product_id")
+  sizeId    Int?     @map("size_id")
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  size      Size?    @relation(fields: [sizeId], references: [id], onDelete: SetNull)
+
+  @@map("product_sizes")
+}
+
+model ProductImage {
+  id             Int          @id @default(autoincrement())
+  imageUrl       String       @map("image_url") @db.VarChar(3000)
+  order          Int?
+  productColorId Int          @map("product_color_id")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  productColor   ProductColor @relation(fields: [productColorId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+model ProductFeature {
+  id          Int      @id @default(autoincrement())
+  description String   @db.VarChar(200)
+  productId   Int      @map("product_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_features")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  account   String
+  password  String?    @db.VarChar(200)
+  createdAt DateTime   @default(now()) @map("created_at")
+  cart      CartItem[]
+
+  Like Like[]
+  @@map("users")
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  productId Int      @map("product_id")
+  userId    Int      @map("user_id")
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("cart_items")
+}
+
+model Like {
+  id        Int     @id @default(autoincrement())
+  productId Int     @map("product_id")
+  userId    Int     @map("user_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("likes")
+}
