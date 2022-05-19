@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
+// 차량 번호로 기본 정보 가져오기
 const getInfoByCarNumber = async (carNumber) => {
   return await prisma.$queryRaw`
 		SELECT id, model_name, model_year
@@ -10,6 +11,7 @@ const getInfoByCarNumber = async (carNumber) => {
 	`;
 };
 
+// 차량 판매 등록 시간 및 알림 업데이트
 const updateProgress = async () => {
   return await prisma.$queryRaw`
 		INSERT INTO progresses
@@ -19,6 +21,7 @@ const updateProgress = async () => {
 	`;
 };
 
+// 등록할 차량의 등록 절차 및 과정 정보
 const getLatestProgress = async () => {
   return await prisma.$queryRaw`
 		SELECT id
@@ -28,6 +31,7 @@ const getLatestProgress = async () => {
 	`;
 };
 
+// 차량 판매 등록
 const registerCar = async (
   carId,
   progressId,

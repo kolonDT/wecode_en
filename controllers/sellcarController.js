@@ -1,5 +1,6 @@
 const sellcarService = require("../services/sellcarService");
 
+// 차량 번호로 기본 정보 가져오기
 const getInfoByCarNumber = async (req, res) => {
   try {
     const { carNumber } = req.body;
@@ -19,6 +20,7 @@ const getInfoByCarNumber = async (req, res) => {
   }
 };
 
+// 차량 판매 등록하기
 const registerCar = async (req, res) => {
   try {
     const {
@@ -38,8 +40,10 @@ const registerCar = async (req, res) => {
       throw error;
     }
 
+    // 차량 판매 등록 시간 및 알림 업데이트
     await sellcarService.updateProgress();
 
+    // 차량 판매 등록
     await sellcarService.registerCar(
       carNumber,
       additionalInfo,
