@@ -7,5 +7,7 @@ const sellcarController = require("../controllers/sellcarController");
 router.get("", sellcarController.getInfoByCarNumber);
 // 차량 판매 등록
 router.post("", sellcarController.registerCar);
+// 판매 등록된 차량 정보 조회
+router.get("/:id", sellcarController.registeredCarInfo);
 
 module.exports = router;

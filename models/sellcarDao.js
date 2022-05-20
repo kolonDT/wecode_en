@@ -51,11 +51,20 @@ const registerCar = async (
 	`;
 };
 
-// const requestDetail = async();
+// 판매 등록된 차량 정보 조회
+const registeredCarInfo = async (id) => {
+  return await prisma.$queryRaw`
+		SELECT
+			car_id, progress_id, additional_info, driving_distance, contact, image, address, lat, lon
+		FROM registered_cars
+		WHERE id = ${id}
+	`;
+};
 
 module.exports = {
   getInfoByCarNumber,
   updateProgress,
   getLatestProgress,
   registerCar,
+  registeredCarInfo,
 };

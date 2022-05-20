@@ -48,4 +48,14 @@ const registerCar = async (
   );
 };
 
-module.exports = { getInfoByCarNumber, registerCar, updateProgress };
+// 판매 등록된 차량 정보 조회
+const registeredCarInfo = async (id) => {
+  return await sellcarDao.registeredCarInfo(id);
+};
+
+module.exports = {
+  getInfoByCarNumber,
+  registerCar,
+  updateProgress,
+  registeredCarInfo,
+};

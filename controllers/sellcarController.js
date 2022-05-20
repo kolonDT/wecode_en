@@ -62,4 +62,17 @@ const registerCar = async (req, res) => {
   }
 };
 
-module.exports = { getInfoByCarNumber, registerCar };
+// 판매 등록된 차량 정보 조회
+const registeredCarInfo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const registeredCarInfo = await sellcarService.registeredCarInfo(id);
+
+    res.status(200).json({ registeredCarInfo });
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
+module.exports = { getInfoByCarNumber, registerCar, registeredCarInfo };
