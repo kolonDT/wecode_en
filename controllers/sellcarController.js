@@ -41,7 +41,7 @@ const registerCar = async (req, res) => {
     }
 
     // 차량 판매 등록 시간 및 알림 업데이트
-    await sellcarService.updateProgress();
+    await sellcarService.registerProgress();
 
     // 차량 판매 등록
     await sellcarService.registerCar(

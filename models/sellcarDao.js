@@ -12,7 +12,7 @@ const getInfoByCarNumber = async (carNumber) => {
 };
 
 // 차량 판매 등록 시간 및 알림 업데이트
-const updateProgress = async () => {
+const registerProgress = async () => {
   return await prisma.$queryRaw`
 		INSERT INTO progresses
 			(quote_requested)

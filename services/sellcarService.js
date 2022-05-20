@@ -15,8 +15,8 @@ const getInfoByCarNumber = async (carNumber) => {
 };
 
 // 차량 판매 등록 시간 및 알림 업데이트
-const updateProgress = async () => {
-  return await sellcarDao.updateProgress();
+const registerProgress = async () => {
+  return await sellcarDao.registerProgress();
 };
 
 // 차량 판매 등록
@@ -56,6 +56,6 @@ const registeredCarInfo = async (id) => {
 module.exports = {
   getInfoByCarNumber,
   registerCar,
-  updateProgress,
+  registerProgress,
   registeredCarInfo,
 };
