@@ -63,7 +63,7 @@ const registeredCarInfo = async (id) => {
 
 module.exports = {
   getInfoByCarNumber,
-  updateProgress,
+  registerProgress,
   getLatestProgress,
   registerCar,
   registeredCarInfo,
