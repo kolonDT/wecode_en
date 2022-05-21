@@ -1,4 +1,4 @@
-const sellcarService = require("../services/sellcarService");
+const carService = require("../services/carService");
 
 // 차량 번호로 기본 정보 가져오기
 const getInfoByCarNumber = async (req, res) => {
@@ -11,7 +11,7 @@ const getInfoByCarNumber = async (req, res) => {
       throw error;
     }
 
-    const infoByCarNumber = await sellcarService.getInfoByCarNumber(carNumber);
+    const infoByCarNumber = await carService.getInfoByCarNumber(carNumber);
 
     res.status(200).json({ infoByCarNumber });
   } catch (err) {
@@ -41,10 +41,10 @@ const registerCar = async (req, res) => {
     }
 
     // 차량 판매 등록 시간 및 알림 업데이트
-    await sellcarService.registerProgress();
+    await carService.registerProgress();
 
     // 차량 판매 등록
-    await sellcarService.registerCar(
+    await carService.registerCar(
       carNumber,
       additionalInfo,
       distance,
@@ -66,7 +66,7 @@ const registerCar = async (req, res) => {
 const registeredCarInfo = async (req, res) => {
   try {
     const { id } = req.params;
-    const registeredCarInfo = await sellcarService.registeredCarInfo(id);
+    const registeredCarInfo = await carService.registeredCarInfo(id);
 
     res.status(200).json({ registeredCarInfo });
   } catch (err) {
