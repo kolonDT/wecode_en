@@ -51,6 +51,28 @@ const registerCar = async (
 	`;
 };
 
+// 최근 등록한 차량의 id
+const getLatestRegisteredId = async () => {
+  return await prisma.$queryRaw`
+		SELECT id
+		FROM registered_cars
+		ORDER BY created_at DESC
+		LIMIT 1
+	`;
+};
+
+// 차량 옵션 중간 테이블 입력
+const registerOption = async (regCarId, optionIdList) => {
+  for (i = 0; i < optionIdList.length; i++) {
+    await prisma.$queryRaw`
+			INSERT INTO registered_car_options (reg_car_id, option_id)
+			VALUES (${regCarId}, ${optionIdList[i]});
+		`;
+  }
+
+  return;
+};
+
 // 판매 등록된 차량 정보 조회
 const registeredCarInfo = async (id) => {
   return await prisma.$queryRaw`
@@ -73,5 +95,7 @@ module.exports = {
   registerProgress,
   getLatestProgress,
   registerCar,
+  getLatestRegisteredId,
+  registerOption,
   registeredCarInfo,
 };
