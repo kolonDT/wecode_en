@@ -61,9 +61,15 @@ const registeredCarInfo = async (id) => {
   return await carDao.registeredCarInfo(id);
 };
 
+// 판매 등록된 모든 차량 정보 조회
+const myCarsInfo = async () => {
+  return await carDao.myCarsInfo();
+};
+
 module.exports = {
   getInfoByCarNumber,
   registerCar,
   registerProgress,
   registeredCarInfo,
+  myCarsInfo,
 };

@@ -90,6 +90,17 @@ const registeredCarInfo = async (id) => {
 	`;
 };
 
+// 판매 등록된 모든 차량 정보 조회
+const myCarsInfo = async () => {
+  return await prisma.$queryRaw`
+	SELECT rc.id, rc.car_id, c.car_number
+		, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completede
+	FROM registered_cars rc
+	JOIN cars c ON rc.car_id = c.id
+	JOIN progresses p ON rc.progress_id = p.id
+	`;
+};
+
 module.exports = {
   getInfoByCarNumber,
   registerProgress,
@@ -98,4 +109,5 @@ module.exports = {
   getLatestRegisteredId,
   registerOption,
   registeredCarInfo,
+  myCarsInfo,
 };

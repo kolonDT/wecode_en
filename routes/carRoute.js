@@ -7,6 +7,8 @@ const carController = require("../controllers/carController");
 router.get("", carController.getInfoByCarNumber);
 // 차량 판매 등록
 router.post("", carController.registerCar);
+// 판매 등록된 모든 차량 정보 조회
+router.get("/myCars", carController.myCarsInfo);
 // 판매 등록된 차량 정보 조회
 router.get("/:id", carController.registeredCarInfo);
 

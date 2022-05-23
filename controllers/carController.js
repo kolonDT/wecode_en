@@ -3,7 +3,8 @@ const carService = require("../services/carService");
 // 차량 번호로 기본 정보 가져오기
 const getInfoByCarNumber = async (req, res) => {
   try {
-    const { carNumber } = req.body;
+    const { carNumber } = req.query;
+    console.log("carNumber : ", carNumber);
 
     if (!carNumber) {
       const error = new Error("KEY_ERROR");
@@ -77,4 +78,21 @@ const registeredCarInfo = async (req, res) => {
   }
 };
 
-module.exports = { getInfoByCarNumber, registerCar, registeredCarInfo };
+// 판매 등록된 모든 차량 정보 조회
+const myCarsInfo = async (req, res) => {
+  try {
+    const myCarsInfo = await carService.myCarsInfo();
+
+    res.status(200).json({ myCarsInfo });
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
+module.exports = {
+  getInfoByCarNumber,
+  registerCar,
+  registeredCarInfo,
+  myCarsInfo,
+};
