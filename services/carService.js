@@ -28,6 +28,7 @@ const registerCar = async (
   contact,
   image,
   address,
+  addressDetail,
   lat,
   lon
 ) => {
@@ -45,6 +46,7 @@ const registerCar = async (
     contact,
     image,
     address,
+    addressDetail,
     lat,
     lon
   );

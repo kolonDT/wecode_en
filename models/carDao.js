@@ -40,14 +40,15 @@ const registerCar = async (
   contact,
   image,
   address,
+  addressDetail,
   lat,
   lon
 ) => {
   return await prisma.$queryRaw`
 		INSERT INTO registered_cars
-			(car_id, progress_id, additional_info, driving_distance, contact, image, address, lat, lon)
+			(car_id, progress_id, additional_info, driving_distance, contact, image, address, address_detail, lat, lon)
 		VALUES
-			(${carId}, ${progressId}, ${additionalInfo}, ${distance}, ${contact}, ${image}, ${address}, ${lat}, ${lon})
+			(${carId}, ${progressId}, ${additionalInfo}, ${distance}, ${contact}, ${image}, ${address}, ${addressDetail}, ${lat}, ${lon})
 	`;
 };
 
@@ -79,7 +80,7 @@ const registeredCarInfo = async (id) => {
 		SELECT
 			rc.id, rc.car_id, rc.progress_id, c.brand, c.car_number, c.model_name, c.model_year
 			, GROUP_CONCAT(o.option_name) AS options
-			, rc.driving_distance, rc.image, rc.contact, rc.address, rc.lat, rc.lon
+			, rc.driving_distance, rc.image, rc.contact, rc.address, rc.address_detail, rc.lat, rc.lon
 			, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completede
 		FROM registered_cars rc
 		LEFT JOIN cars c ON rc.car_id = c.id

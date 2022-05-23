@@ -32,11 +32,12 @@ const registerCar = async (req, res) => {
       contact,
       image,
       address,
+      addressDetail,
       lat,
       lon,
     } = req.body;
 
-    if (!carNumber || !distance || !contact || !address) {
+    if (!carNumber || !distance || !contact || !address || !addressDetail) {
       const error = new Error("KEY_ERROR");
       error.statusCode = 400;
       throw error;
@@ -54,6 +55,7 @@ const registerCar = async (req, res) => {
       contact,
       image,
       address,
+      addressDetail,
       lat,
       lon
     );
