@@ -88,6 +88,7 @@ const registeredCarInfo = async (id) => {
 		LEFT JOIN options o ON rco.option_id = o.id
 		JOIN progresses p ON rc.progress_id = p.id
 		WHERE rc.id = ${id}
+		GROUP BY rc.id
 	`;
 };
 
