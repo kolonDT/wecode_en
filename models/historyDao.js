@@ -22,4 +22,13 @@ const updateProgress = async (progressId, progress) => {
 	`;
 };
 
-module.exports = { getProgressId, updateProgress };
+// Push 알림 설정
+const setNotification = async (progressId, notificationStatus) => {
+  return await prisma.$queryRaw`
+    UPDATE progresses
+    SET is_new = ${notificationStatus}
+    WHERE id = ${progressId}
+  `;
+};
+
+module.exports = { getProgressId, updateProgress, setNotification };

@@ -8,6 +8,15 @@ const updateProgress = async (carId, progress) => {
   return await historyDao.updateProgress(progressId, progress);
 };
 
+// Push 알림 설정
+const setNotification = async (carId, notificationStatus) => {
+  // 등록 차량 id로 요청 절차 id 가져오기
+  const progressId = await historyDao.getProgressId(carId);
+
+  return await historyDao.setNotification(progressId, notificationStatus);
+};
+
 module.exports = {
   updateProgress,
+  setNotification,
 };
