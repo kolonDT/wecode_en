@@ -11,5 +11,7 @@ router.post("", carController.registerCar);
 router.get("/myCars", carController.myCarsInfo);
 // 판매 등록된 차량 정보 조회
 router.get("/:id", carController.registeredCarInfo);
+// 판매 등록된 차량 정보 조회
+router.get("/priceByDistance/:carId", carController.priceByDistance);
 
 module.exports = router;

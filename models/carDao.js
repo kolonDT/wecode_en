@@ -103,6 +103,26 @@ const myCarsInfo = async () => {
 	`;
 };
 
+// 해당 차량의 모델명, 주행거리, 가격 정보 조회
+const getDistAndPrice = async (carId) => {
+  return await prisma.$queryRaw`
+		SELECT c.model_name, c.model_year, c.driving_distance, c.price_used
+		FROM registered_cars rc
+		JOIN cars c ON c.id = rc.car_id
+		WHERE rc.id = ${carId}
+	`;
+};
+
+// 주행 거리 별 차량 시세 조회
+const priceByDistance = async (modelName, modelYear) => {
+  return await prisma.$queryRaw`
+		SELECT driving_distance, price_used
+		FROM cars
+		WHERE model_name = ${modelName}
+		AND model_year = ${modelYear}
+	`;
+};
+
 module.exports = {
   getInfoByCarNumber,
   registerProgress,
@@ -112,4 +132,6 @@ module.exports = {
   registerOption,
   registeredCarInfo,
   myCarsInfo,
+  getDistAndPrice,
+  priceByDistance,
 };

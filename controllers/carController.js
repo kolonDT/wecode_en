@@ -92,9 +92,23 @@ const myCarsInfo = async (req, res) => {
   }
 };
 
+// 주행 거리 별 차량 시세 조회
+const priceByDistance = async (req, res) => {
+  try {
+    const { carId } = req.params;
+    const priceByDistance = await carService.priceByDistance(carId);
+
+    res.status(200).json({ priceByDistance });
+  } catch (err) {
+    console.log(err);
+    return res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getInfoByCarNumber,
   registerCar,
   registeredCarInfo,
   myCarsInfo,
+  priceByDistance,
 };

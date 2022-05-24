@@ -68,10 +68,19 @@ const myCarsInfo = async () => {
   return await carDao.myCarsInfo();
 };
 
+// 주행 거리 별 차량 시세 조회
+const priceByDistance = async (carId) => {
+  const modelInfo = await carDao.getDistAndPrice(carId);
+  const modelName = await modelInfo[0].model_name;
+  const modelYear = await modelInfo[0].model_year;
+  return await carDao.priceByDistance(modelName, modelYear);
+};
+
 module.exports = {
   getInfoByCarNumber,
   registerCar,
   registerProgress,
   registeredCarInfo,
   myCarsInfo,
+  priceByDistance,
 };
