@@ -4,11 +4,10 @@ const app = express();
 
 const carRoute = require("./carRoute");
 const historyRoute = require("./historyRoute");
-const uploadRoute = require("./uploadRoute");
+const imageRoute = require("./imageRoute");
 
 router.use("/car", carRoute);
 router.use("/history", historyRoute);
-router.use("/upload", uploadRoute);
-app.use(express.static(__dirname + "/databases/uploads"));
+router.use("/image", imageRoute);
 
 module.exports = router;
