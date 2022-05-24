@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
+  allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
   allowedMimeTypes.includes(file.mimetype)
     ? cb(null, true)
     : cb({ message: `INVALID_FILENAME_EXTENSION` }, false);
