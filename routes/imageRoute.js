@@ -13,10 +13,18 @@ const storage = multer.diskStorage({
   },
 });
 
-// const fileFilter = (req, file, cb) => {};
+const fileFilter = (req, file, cb) => {
+  allowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
+  allowedMimeTypes.includes(file.mimetype)
+    ? cb(null, true)
+    : cb({ message: `INVALID_FILENAME_EXTENSION` }, false);
+};
+
+console.log("storage end");
 
 const upload = multer({
   storage,
+  fileFilter,
   limits: { fileSize: 5 * 1024 * 1024, files: 10 },
 });
 
