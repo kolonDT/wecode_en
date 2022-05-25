@@ -68,8 +68,8 @@ const registerCar = async (req, res) => {
 // 판매 등록된 차량 정보 조회
 const registeredCarInfo = async (req, res) => {
   try {
-    const { id } = req.params;
-    const registeredCarInfo = await carService.registeredCarInfo(id);
+    const { carNumber } = req.query;
+    const registeredCarInfo = await carService.registeredCarInfo(carNumber);
 
     res.status(200).json({ registeredCarInfo });
   } catch (err) {
@@ -93,8 +93,8 @@ const myCarsInfo = async (req, res) => {
 // 주행 거리 별 차량 시세 조회
 const priceByDistance = async (req, res) => {
   try {
-    const { carId } = req.params;
-    const priceByDistance = await carService.priceByDistance(carId);
+    const { carNumber } = req.query;
+    const priceByDistance = await carService.priceByDistance(carNumber);
 
     res.status(200).json({ priceByDistance });
   } catch (err) {
