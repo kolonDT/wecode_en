@@ -27,7 +27,7 @@ const upload = multer({
 });
 
 // 파일 업로드
-router.post("/:carId", upload.array("image"), imageController.uploadImages);
+router.post("", upload.array("image"), imageController.uploadImages);
 // 파일명으로 이미지 파일 가져오기
 router.get("/:fileName", imageController.getImages);
 

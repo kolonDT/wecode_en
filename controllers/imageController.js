@@ -4,14 +4,14 @@ const fs = require("fs");
 // 이미지 업로드
 const uploadImages = async (req, res) => {
   try {
-    const { carId } = req.params;
+    const { carNumber } = req.query;
 
     const imageArray = [];
     for (i = 0; i < req.files.length; i++) {
       imageArray.push(req.files[i].originalname);
     }
 
-    await imageService.uploadImages(carId, imageArray);
+    await imageService.uploadImages(carNumber, imageArray);
 
     res.status(200).json({ message: "UPLOAD_IMAGES_SUCCESS" });
   } catch (err) {
