@@ -19,7 +19,7 @@ RUN npx prisma generate
 # 현재 경로에 존재하는 모든 소스파일을 이미지에 복사
 # COPY . .
 COPY server.js ./
-COPY .env ./
+# COPY .env ./
 COPY routes/ routes/
 COPY prisma/ prisma/
 
