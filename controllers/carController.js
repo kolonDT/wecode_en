@@ -4,7 +4,6 @@ const carService = require("../services/carService");
 const getInfoByCarNumber = async (req, res) => {
   try {
     const { carNumber } = req.query;
-    console.log("carNumber : ", carNumber);
 
     if (!carNumber) {
       const error = new Error("KEY_ERROR");

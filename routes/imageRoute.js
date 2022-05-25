@@ -20,8 +20,6 @@ const fileFilter = (req, file, cb) => {
     : cb({ message: `INVALID_FILENAME_EXTENSION` }, false);
 };
 
-console.log("storage end");
-
 const upload = multer({
   storage,
   fileFilter,
