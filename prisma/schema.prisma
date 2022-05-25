@@ -10,107 +10,87 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id             Int              @id @default(autoincrement())
-  name           String
-  price          Decimal          @db.Decimal(10, 2)
-  productColor   ProductColor[]
-  ProductSize    ProductSize[]
-  ProductFeature ProductFeature[]
-  cart           CartItem[]
+model Car {
+  id               Int      @id @default(autoincrement())
+  brand            String
+  car_number       String   @unique
+  model_name       String
+  model_year       Int
+  driving_distance Int
+  price            Int
+  fuel_id          Int
+  mission_id       Int
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now())
 
-  Like Like[]
-  @@map("products")
+  fuels          Fuel             @relation(fields: [fuel_id], references: [id])
+  missions       Mission          @relation(fields: [mission_id], references: [id])
+  Registered_car Registered_car[]
+  @@map("cars")
 }
 
-model Color {
-  id           Int            @id @default(autoincrement())
-  name         String
-  productColor ProductColor[]
+model Fuel {
+  id         Int      @id @default(autoincrement())
+  fuel_name  String
+  created_at DateTime @default(now())
 
-  @@map("colors")
+  Car Car[]
+  @@map("fuels")
 }
 
-model ProductColor {
-  id           Int            @id @default(autoincrement())
-  productId    Int?           @map("product_id")
-  colorId      Int?           @map("color_id")
-  isDefault    Boolean        @map("is_default")
-  product      Product?       @relation(fields: [productId], references: [id], onDelete: SetNull)
-  color        Color?         @relation(fields: [colorId], references: [id], onDelete: SetNull)
-  ProductImage ProductImage[]
+model Mission {
+  id           Int      @id @default(autoincrement())
+  mission_name String
+  created_at   DateTime @default(now())
 
-  @@map("product_colors")
+  Car Car[]
+  @@map("missions")
 }
 
-model Size {
-  id          Int           @id @default(autoincrement())
-  name        String
-  ProductSize ProductSize[]
-
-  @@map("sizes")
-}
-
-model ProductSize {
-  id        Int      @id @default(autoincrement())
-  productId Int?     @map("product_id")
-  sizeId    Int?     @map("size_id")
-  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
-  size      Size?    @relation(fields: [sizeId], references: [id], onDelete: SetNull)
-
-  @@map("product_sizes")
-}
-
-model ProductImage {
-  id             Int          @id @default(autoincrement())
-  imageUrl       String       @map("image_url") @db.VarChar(3000)
-  order          Int?
-  productColorId Int          @map("product_color_id")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  productColor   ProductColor @relation(fields: [productColorId], references: [id], onDelete: Cascade)
-
-  @@map("product_images")
-}
-
-model ProductFeature {
+model Registered_car {
   id          Int      @id @default(autoincrement())
-  description String   @db.VarChar(200)
-  productId   Int      @map("product_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  car_id      Int      @unique
+  progress_id Int
+  more_info   String   @db.LongText
+  contact     String?
+  address     String?
+  image       String?
+  created_at  DateTime @default(now())
 
-  @@map("product_features")
+  cars       Car      @relation(fields: [car_id], references: [id])
+  progresses Progress @relation(fields: [progress_id], references: [id])
+
+  Registered_car_option Registered_car_option[]
+  @@map("registered_cars")
 }
 
-model User {
-  id        Int        @id @default(autoincrement())
-  account   String
-  password  String?    @db.VarChar(200)
-  createdAt DateTime   @default(now()) @map("created_at")
-  cart      CartItem[]
+model Registered_car_option {
+  id         Int      @id @default(autoincrement())
+  reg_car_id Int
+  option_id  Int
+  created_at DateTime @default(now())
 
-  Like Like[]
-  @@map("users")
+  registered_cars Registered_car @relation(fields: [reg_car_id], references: [id])
+  options         Option         @relation(fields: [option_id], references: [id])
+  @@map("registered_car_options")
 }
 
-model CartItem {
-  id        Int      @id @default(autoincrement())
-  productId Int      @map("product_id")
-  userId    Int      @map("user_id")
-  quantity  Int      @default(1)
-  createdAt DateTime @default(now()) @map("created_at")
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Option {
+  id          Int      @id @default(autoincrement())
+  option_name String
+  created_at  DateTime @default(now())
 
-  @@map("cart_items")
+  Registered_car_option Registered_car_option[]
+  @@map("options")
 }
 
-model Like {
-  id        Int     @id @default(autoincrement())
-  productId Int     @map("product_id")
-  userId    Int     @map("user_id")
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Progress {
+  id           Int      @id @default(autoincrement())
+  progress     String
+  is_completed Boolean  @default(false)
+  is_new       Boolean  @default(false)
+  created_at   DateTime @default(now())
 
-  @@map("likes")
+  Registered_car Registered_car[]
+  @@map("progresses")
 }
