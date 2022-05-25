@@ -38,7 +38,6 @@ const registerCar = async (
   additionalInfo,
   distance,
   contact,
-  image,
   address,
   addressDetail,
   lat,
@@ -46,9 +45,9 @@ const registerCar = async (
 ) => {
   return await prisma.$queryRaw`
 		INSERT INTO registered_cars
-			(car_id, progress_id, additional_info, driving_distance, contact, image, address, address_detail, lat, lon)
+			(car_id, progress_id, additional_info, driving_distance, contact, address, address_detail, lat, lon)
 		VALUES
-			(${carId}, ${progressId}, ${additionalInfo}, ${distance}, ${contact}, ${image}, ${address}, ${addressDetail}, ${lat}, ${lon})
+			(${carId}, ${progressId}, ${additionalInfo}, ${distance}, ${contact}, ${address}, ${addressDetail}, ${lat}, ${lon})
 	`;
 };
 
@@ -78,7 +77,7 @@ const registerOption = async (regCarId, optionIdList) => {
 const registeredCarInfo = async (id) => {
   return await prisma.$queryRaw`
 		SELECT
-			rc.id, rc.car_id, rc.progress_id, c.brand, c.car_number, c.model_name, c.model_year
+			rc.id, rc.car_id, rc.progress_id, rc.additional_info, c.brand, c.car_number, c.model_name, c.model_year
 			, GROUP_CONCAT(o.option_name) AS options
 			, rc.driving_distance, rc.image, rc.contact, rc.address, rc.address_detail, rc.lat, rc.lon
 			, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completede, p.is_new
