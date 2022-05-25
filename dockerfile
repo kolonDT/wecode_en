@@ -20,7 +20,7 @@ RUN npx prisma generate
 # COPY . .
 COPY server.js ./
 COPY .env ./
-COPY routers/ routers/
+COPY routes/ routes/
 COPY prisma/ prisma/
 
 
