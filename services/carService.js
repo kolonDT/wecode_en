@@ -26,7 +26,6 @@ const registerCar = async (
   distance,
   optionIdList,
   contact,
-  image,
   address,
   addressDetail,
   lat,
@@ -44,7 +43,6 @@ const registerCar = async (
     additionalInfo,
     distance,
     contact,
-    image,
     address,
     addressDetail,
     lat,
@@ -59,8 +57,8 @@ const registerCar = async (
 };
 
 // 판매 등록된 차량 정보 조회
-const registeredCarInfo = async (id) => {
-  return await carDao.registeredCarInfo(id);
+const registeredCarInfo = async (carNumber) => {
+  return await carDao.registeredCarInfo(carNumber);
 };
 
 // 판매 등록된 모든 차량 정보 조회
@@ -69,8 +67,8 @@ const myCarsInfo = async () => {
 };
 
 // 주행 거리 별 차량 시세 조회
-const priceByDistance = async (carId) => {
-  const modelInfo = await carDao.getDistAndPrice(carId);
+const priceByDistance = async (carNumber) => {
+  const modelInfo = await carDao.getDistAndPrice(carNumber);
   const modelName = await modelInfo[0].model_name;
   const modelYear = await modelInfo[0].model_year;
   return await carDao.priceByDistance(modelName, modelYear);

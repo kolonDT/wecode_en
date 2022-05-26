@@ -3,10 +3,10 @@ const historyService = require("../services/historyService");
 // 요청 내역 업데이트 및 승인 시간 생성
 const updateProgress = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { carNumber } = req.query;
     const { progress } = req.body;
 
-    await historyService.updateProgress(id, progress);
+    await historyService.updateProgress(carNumber, progress);
 
     res.status(200).json({ message: "UPDATE_SUCCESS" });
   } catch (err) {
@@ -18,7 +18,7 @@ const updateProgress = async (req, res) => {
 // Push 알림 설정
 const setNotification = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { carNumber } = req.query;
     const { notificationStatus } = req.body;
     const validStatus = [-1, 0, 1];
 
@@ -28,7 +28,7 @@ const setNotification = async (req, res) => {
       throw error;
     }
 
-    await historyService.setNotification(id, notificationStatus);
+    await historyService.setNotification(carNumber, notificationStatus);
 
     res.status(200).json({ message: "UPDATE_SUCCESS" });
   } catch (err) {
