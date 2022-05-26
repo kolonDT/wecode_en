@@ -38,7 +38,6 @@ const registerCar = async (
   additionalInfo,
   distance,
   contact,
-  image,
   address,
   addressDetail,
   lat,
@@ -46,9 +45,9 @@ const registerCar = async (
 ) => {
   return await prisma.$queryRaw`
 		INSERT INTO registered_cars
-			(car_id, progress_id, additional_info, driving_distance, contact, image, address, address_detail, lat, lon)
+			(car_id, progress_id, additional_info, driving_distance, contact, address, address_detail, lat, lon)
 		VALUES
-			(${carId}, ${progressId}, ${additionalInfo}, ${distance}, ${contact}, ${image}, ${address}, ${addressDetail}, ${lat}, ${lon})
+			(${carId}, ${progressId}, ${additionalInfo}, ${distance}, ${contact}, ${address}, ${addressDetail}, ${lat}, ${lon})
 	`;
 };
 
@@ -75,19 +74,19 @@ const registerOption = async (regCarId, optionIdList) => {
 };
 
 // 판매 등록된 차량 정보 조회
-const registeredCarInfo = async (id) => {
+const registeredCarInfo = async (carNumber) => {
   return await prisma.$queryRaw`
 		SELECT
 			rc.id, rc.car_id, rc.progress_id, c.brand, c.car_number, c.model_name, c.model_year
 			, GROUP_CONCAT(o.option_name) AS options
-			, rc.driving_distance, rc.image, rc.contact, rc.address, rc.address_detail, rc.lat, rc.lon
-			, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completede, p.is_new
+			, rc.additional_info, rc.driving_distance, rc.image, rc.contact, rc.address, rc.address_detail, rc.lat, rc.lon
+			, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completed, p.is_new
 		FROM registered_cars rc
 		LEFT JOIN cars c ON rc.car_id = c.id
 		JOIN registered_car_options rco ON rc.id = rco.reg_car_id
 		LEFT JOIN options o ON rco.option_id = o.id
 		JOIN progresses p ON rc.progress_id = p.id
-		WHERE rc.id = ${id}
+		WHERE c.car_number = ${carNumber}
 		GROUP BY rc.id
 	`;
 };
@@ -96,7 +95,7 @@ const registeredCarInfo = async (id) => {
 const myCarsInfo = async () => {
   return await prisma.$queryRaw`
 	SELECT rc.id, rc.car_id, c.car_number
-		, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completede
+		, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completed
 	FROM registered_cars rc
 	JOIN cars c ON rc.car_id = c.id
 	JOIN progresses p ON rc.progress_id = p.id
@@ -104,12 +103,12 @@ const myCarsInfo = async () => {
 };
 
 // 해당 차량의 모델명, 주행거리, 가격 정보 조회
-const getDistAndPrice = async (carId) => {
+const getDistAndPrice = async (carNumber) => {
   return await prisma.$queryRaw`
 		SELECT c.model_name, c.model_year, c.driving_distance, c.price_used
 		FROM registered_cars rc
 		JOIN cars c ON c.id = rc.car_id
-		WHERE rc.id = ${carId}
+		WHERE c.car_number = ${carNumber}
 	`;
 };
 

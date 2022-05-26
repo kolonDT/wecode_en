@@ -12,20 +12,22 @@ datasource db {
 
 model Car {
   id               Int      @id @default(autoincrement())
+  car_id_number    String   @unique
   brand            String
   car_number       String   @unique
   model_name       String
   model_year       Int
   driving_distance Int
-  price            Int
+  price_original   Int
+  price_used       Int
   fuel_id          Int
   mission_id       Int
   created_at       DateTime @default(now())
   updated_at       DateTime @default(now())
 
-  fuels          Fuel             @relation(fields: [fuel_id], references: [id])
-  missions       Mission          @relation(fields: [mission_id], references: [id])
-  Registered_car Registered_car[]
+  fuels          Fuel            @relation(fields: [fuel_id], references: [id])
+  missions       Mission         @relation(fields: [mission_id], references: [id])
+  Registered_car Registered_car?
   @@map("cars")
 }
 
@@ -48,14 +50,18 @@ model Mission {
 }
 
 model Registered_car {
-  id          Int      @id @default(autoincrement())
-  car_id      Int      @unique
-  progress_id Int
-  more_info   String   @db.LongText
-  contact     String?
-  address     String?
-  image       String?
-  created_at  DateTime @default(now())
+  id               Int      @id @default(autoincrement())
+  car_id           Int      @unique
+  progress_id      Int      @unique
+  additional_info  String   @db.LongText
+  driving_distance Int
+  contact          String?
+  image            String?  @db.LongText
+  address          String?
+  address_detail   String?
+  lat              String?
+  lon              String?
+  created_at       DateTime @default(now())
 
   cars       Car      @relation(fields: [car_id], references: [id])
   progresses Progress @relation(fields: [progress_id], references: [id])
@@ -85,12 +91,16 @@ model Option {
 }
 
 model Progress {
-  id           Int      @id @default(autoincrement())
-  progress     String
-  is_completed Boolean  @default(false)
-  is_new       Boolean  @default(false)
-  created_at   DateTime @default(now())
+  id                Int       @id @default(autoincrement())
+  quote_requested   DateTime?
+  dealer_assigned   DateTime?
+  dealer_consulting DateTime?
+  selling_requested DateTime?
+  selling_completed DateTime?
+  is_new            Int       @default(-1)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime?
 
-  Registered_car Registered_car[]
+  Registered_car Registered_car?
   @@map("progresses")
 }

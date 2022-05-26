@@ -3,11 +3,12 @@ const { Prisma, PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 // 등록 차량 id로 해당하는 progress_id 가져오기
-const getProgressId = async (carId) => {
+const getProgressId = async (carNumber) => {
   const progressId = await prisma.$queryRaw`
-    SELECT progress_id
-    FROM registered_cars
-    WHERE id = ${carId};
+    SELECT rc.progress_id
+    FROM registered_cars rc
+    JOIN cars c ON rc.car_id = c.id
+    WHERE c.car_number = ${carNumber}
 	`;
 
   return progressId[0].progress_id;
