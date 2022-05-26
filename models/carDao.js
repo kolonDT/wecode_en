@@ -80,7 +80,7 @@ const registeredCarInfo = async (carNumber) => {
 			rc.id, rc.car_id, rc.progress_id, c.brand, c.car_number, c.model_name, c.model_year
 			, GROUP_CONCAT(o.option_name) AS options
 			, rc.additional_info, rc.driving_distance, rc.image, rc.contact, rc.address, rc.address_detail, rc.lat, rc.lon
-			, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completede, p.is_new
+			, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completed, p.is_new
 		FROM registered_cars rc
 		LEFT JOIN cars c ON rc.car_id = c.id
 		JOIN registered_car_options rco ON rc.id = rco.reg_car_id
@@ -95,7 +95,7 @@ const registeredCarInfo = async (carNumber) => {
 const myCarsInfo = async () => {
   return await prisma.$queryRaw`
 	SELECT rc.id, rc.car_id, c.car_number
-		, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completede
+		, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completed
 	FROM registered_cars rc
 	JOIN cars c ON rc.car_id = c.id
 	JOIN progresses p ON rc.progress_id = p.id
