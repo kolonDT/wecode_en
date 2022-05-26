@@ -28,7 +28,7 @@ COPY models/ models/
 RUN mkdir -p databasdes/uploads
 
 ENV PORT=8000
-ENV DATABASE_URL="mysql://root:dkaghrkanjdi!@10.133.30.32:33306/kldt"
+# ENV DATABASE_URL="mysql://root:dkaghrkanjdi!@10.133.30.32:33306/kldt"
 
 ## Run the application on the port 8000
 # 8000번 포트를 외부에 개방하도록 설정
