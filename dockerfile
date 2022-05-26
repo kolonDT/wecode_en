@@ -22,13 +22,19 @@ COPY server.js ./
 # COPY .env ./
 COPY routes/ routes/
 COPY prisma/ prisma/
+COPY controllers/ controllers/
+COPY services/ services/
+COPY models/ models/
+RUN mkdir -p databasdes/uploads
 
+ENV PORT=8000
+ENV DATABASE_URL="mysql://root:dkaghrkanjdi!@10.133.30.32:33306/kldt"
 
 ## Run the application on the port 8000
 # 8000번 포트를 외부에 개방하도록 설정
 EXPOSE 8000
 
-# === 도커가 이미지를 빌드할 때의 명렁어 
+# === 도커가 이미지를 빌드할 때의 명렁어
 
 CMD ["npm", "start"]
 
