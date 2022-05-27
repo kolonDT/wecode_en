@@ -25,7 +25,7 @@ COPY prisma/ prisma/
 COPY controllers/ controllers/
 COPY services/ services/
 COPY models/ models/
-RUN mkdir -p databases/uploads
+COPY databases/ databases/
 
 ENV PORT=8000
 ENV DATABASE_URL="mysql://root:dkaghrkanjdi!@10.133.30.32:33306/test01"
