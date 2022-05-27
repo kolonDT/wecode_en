@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-// 이미지 업로드
+// 차량 번호로 등록 차량 id 가져오기
 const getCarIdByCarNumber = async (carNumber) => {
   const registeredCarId = await prisma.$queryRaw`
 		SELECT rc.id
