@@ -98,7 +98,7 @@ model Progress {
   dealer_consulting DateTime?
   selling_requested DateTime?
   selling_completed DateTime?
-  is_new            Int       @default(-1)
+  is_new            Int       @default(1)
   created_at        DateTime  @default(now())
   updated_at        DateTime?
 
