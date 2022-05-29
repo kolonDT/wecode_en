@@ -72,7 +72,7 @@ const registerOption = async (regCarId, optionIdList) => {
   return;
 };
 
-// ---------------- Dao to Service ----------------
+// ---------------- 차량 판매 등록 ----------------
 const registerCar = async (
   carId,
   additionalInfo,
@@ -109,7 +109,7 @@ const registerCar = async (
   // 차량 옵션 중간 테이블 데이터 삽입
   await registerOption(registeredCarId[0].id, optionIdList);
 };
-// ---------------- Dao to Service End ----------------
+// ---------------- 차량 판매 등록 ----------------
 
 // 판매 등록된 차량 정보 조회
 const registeredCarInfo = async (carNumber) => {
@@ -162,6 +162,42 @@ const priceByDistance = async (modelName, modelYear) => {
 	`;
 };
 
+// ---------------- 판매 등록 차량 삭제 ----------------
+// 판매 등록 차량 여부 확인
+const registeredCarInfoByCarNumber = async (carNumber) => {
+  return await prisma.$queryRaw`
+    SELECT rc.id, rc.car_id
+    FROM registered_cars rc
+    JOIN cars c ON rc.car_id = c.id
+    WHERE c.car_number = ${carNumber}
+  `;
+};
+
+// 판매 등록 차량 옵션 (중간 테이블) 삭제
+const deleteRegisteredCarOptions = async (carNumber) => {
+  return await prisma.$queryRaw`
+    DELETE rco FROM registered_car_options rco
+    JOIN registered_cars rc ON rco.reg_car_id = rc.id
+    JOIN cars c ON rc.car_id = c.id
+    WHERE c.car_number = ${carNumber}
+  `;
+};
+
+// 판매 등록 차량 삭제
+const deleteRegisteredCarInfo = async (carNumber) => {
+  return await prisma.$queryRaw`
+    DELETE rc FROM registered_cars rc
+    JOIN cars c ON rc.car_id = c.id
+    WHERE c.car_number = ${carNumber}
+  `;
+};
+
+const deleteRegisteredCar = async (carNumber) => {
+  await deleteRegisteredCarOptions(carNumber);
+  await deleteRegisteredCarInfo(carNumber);
+};
+// ---------------- 판매 등록 차량 삭제 ----------------
+
 module.exports = {
   getInfoByCarNumber,
   registerCar,
@@ -169,4 +205,6 @@ module.exports = {
   myCarsInfo,
   getDistAndPrice,
   priceByDistance,
+  registeredCarInfoByCarNumber,
+  deleteRegisteredCar,
 };

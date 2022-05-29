@@ -67,10 +67,26 @@ const priceByDistance = async (carNumber) => {
   return await carDao.priceByDistance(modelName, modelYear);
 };
 
+const deleteRegisteredCar = async (carNumber) => {
+  // 판매 등록 된 차량 여부 확인을 위한 변수 지정
+  const registeredCarInfoByCarNumber =
+    await carDao.registeredCarInfoByCarNumber(carNumber);
+
+  // 판매 등록 된 차량의 번호와 일치하는 차량이 없을 시 에러
+  if (registeredCarInfoByCarNumber.length === 0) {
+    const error = new Error("INVALID_CAR_NUMBER");
+    error.statusCode = 406;
+    throw error;
+  }
+
+  await carDao.deleteRegisteredCar(carNumber);
+};
+
 module.exports = {
   getInfoByCarNumber,
   registerCar,
   registeredCarInfo,
   myCarsInfo,
   priceByDistance,
+  deleteRegisteredCar,
 };
