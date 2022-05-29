@@ -137,6 +137,7 @@ const myCarsInfo = async () => {
 		FROM registered_cars rc
 		JOIN cars c ON rc.car_id = c.id
 		JOIN progresses p ON rc.progress_id = p.id
+    ORDER BY rc.created_at DESC
 	`;
 };
 
@@ -157,6 +158,7 @@ const priceByDistance = async (modelName, modelYear) => {
 		FROM cars
 		WHERE model_name = ${modelName}
 		AND model_year = ${modelYear}
+    ORDER BY driving_distance
 	`;
 };
 
