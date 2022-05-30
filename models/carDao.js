@@ -154,7 +154,7 @@ const getDistAndPrice = async (carNumber) => {
 // 주행 거리 별 차량 시세 조회
 const priceByDistance = async (modelName, modelYear) => {
   return await prisma.$queryRaw`
-		SELECT driving_distance, price_used
+		SELECT driving_distance AS index, price_used AS tomato
 		FROM cars
 		WHERE model_name = ${modelName}
 		AND model_year = ${modelYear}
