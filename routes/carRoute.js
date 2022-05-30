@@ -13,5 +13,7 @@ router.get("/myCars", carController.myCarsInfo);
 router.get("/myCar", carController.registeredCarInfo);
 // 판매 등록된 차량 정보 조회
 router.get("/priceByDistance", carController.priceByDistance);
+// 판매 등록된 차량 삭제
+router.delete("", carController.deleteRegisteredCar);
 
 module.exports = router;

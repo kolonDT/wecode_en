@@ -25,10 +25,10 @@ COPY prisma/ prisma/
 COPY controllers/ controllers/
 COPY services/ services/
 COPY models/ models/
-RUN mkdir -p databasdes/uploads
+COPY databases/ databases/
 
 ENV PORT=8000
-# ENV DATABASE_URL="mysql://root:dkaghrkanjdi!@10.133.30.32:33306/kldt"
+ENV DATABASE_URL="mysql://root:dkaghrkanjdi!@10.133.30.32:33306/test01"
 
 ## Run the application on the port 8000
 # 8000번 포트를 외부에 개방하도록 설정

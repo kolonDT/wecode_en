@@ -105,3 +105,4 @@ dist
 
 # uploadfiles
 databases/uploads/*
+!databases/uploads/.keep

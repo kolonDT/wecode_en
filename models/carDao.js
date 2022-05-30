@@ -32,7 +32,7 @@ const getLatestProgress = async () => {
 };
 
 // 차량 판매 등록
-const registerCar = async (
+const registerCarInfo = async (
   carId,
   progressId,
   additionalInfo,
@@ -69,9 +69,47 @@ const registerOption = async (regCarId, optionIdList) => {
 			VALUES (${regCarId}, ${optionIdList[i]});
 		`;
   }
-
   return;
 };
+
+// ---------------- 차량 판매 등록 ----------------
+const registerCar = async (
+  carId,
+  additionalInfo,
+  distance,
+  optionIdList,
+  contact,
+  address,
+  addressDetail,
+  lat,
+  lon
+) => {
+  // 차량 등록 요청 내역 생성
+  await registerProgress();
+
+  // 등록할 차량의 요청 내역 정보를 가져오기 위한 변수 지정
+  const progressId = await getLatestProgress();
+
+  // 등록할 차량의 정보 입력
+  await registerCarInfo(
+    carId,
+    progressId[0].id,
+    additionalInfo,
+    distance,
+    contact,
+    address,
+    addressDetail,
+    lat,
+    lon
+  );
+
+  // 차량 옵션 중간 테이블 조작을 위한 최근 등록된 차량의 id 가져오기
+  const registeredCarId = await getLatestRegisteredId();
+
+  // 차량 옵션 중간 테이블 데이터 삽입
+  await registerOption(registeredCarId[0].id, optionIdList);
+};
+// ---------------- 차량 판매 등록 ----------------
 
 // 판매 등록된 차량 정보 조회
 const registeredCarInfo = async (carNumber) => {
@@ -94,11 +132,12 @@ const registeredCarInfo = async (carNumber) => {
 // 판매 등록된 모든 차량 정보 조회
 const myCarsInfo = async () => {
   return await prisma.$queryRaw`
-	SELECT rc.id, rc.car_id, c.car_number
-		, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completed
-	FROM registered_cars rc
-	JOIN cars c ON rc.car_id = c.id
-	JOIN progresses p ON rc.progress_id = p.id
+		SELECT rc.id, rc.car_id, c.car_number
+			, p.quote_requested, p.dealer_assigned, p.dealer_consulting, p.selling_requested, p.selling_completed
+		FROM registered_cars rc
+		JOIN cars c ON rc.car_id = c.id
+		JOIN progresses p ON rc.progress_id = p.id
+    ORDER BY rc.created_at DESC
 	`;
 };
 
@@ -119,18 +158,53 @@ const priceByDistance = async (modelName, modelYear) => {
 		FROM cars
 		WHERE model_name = ${modelName}
 		AND model_year = ${modelYear}
+    ORDER BY driving_distance
 	`;
 };
 
+// ---------------- 판매 등록 차량 삭제 ----------------
+// 판매 등록 차량 여부 확인
+const registeredCarInfoByCarNumber = async (carNumber) => {
+  return await prisma.$queryRaw`
+    SELECT rc.id, rc.car_id
+    FROM registered_cars rc
+    JOIN cars c ON rc.car_id = c.id
+    WHERE c.car_number = ${carNumber}
+  `;
+};
+
+// 판매 등록 차량 옵션 (중간 테이블) 삭제
+const deleteRegisteredCarOptions = async (carNumber) => {
+  return await prisma.$queryRaw`
+    DELETE rco FROM registered_car_options rco
+    JOIN registered_cars rc ON rco.reg_car_id = rc.id
+    JOIN cars c ON rc.car_id = c.id
+    WHERE c.car_number = ${carNumber}
+  `;
+};
+
+// 판매 등록 차량 삭제
+const deleteRegisteredCarInfo = async (carNumber) => {
+  return await prisma.$queryRaw`
+    DELETE rc FROM registered_cars rc
+    JOIN cars c ON rc.car_id = c.id
+    WHERE c.car_number = ${carNumber}
+  `;
+};
+
+const deleteRegisteredCar = async (carNumber) => {
+  await deleteRegisteredCarOptions(carNumber);
+  await deleteRegisteredCarInfo(carNumber);
+};
+// ---------------- 판매 등록 차량 삭제 ----------------
+
 module.exports = {
   getInfoByCarNumber,
-  registerProgress,
-  getLatestProgress,
   registerCar,
-  getLatestRegisteredId,
-  registerOption,
   registeredCarInfo,
   myCarsInfo,
   getDistAndPrice,
   priceByDistance,
+  registeredCarInfoByCarNumber,
+  deleteRegisteredCar,
 };
