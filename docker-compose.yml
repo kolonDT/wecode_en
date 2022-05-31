@@ -12,7 +12,7 @@ services:
     environment:
       REACT_APP_LINKED_API_URI: ${NODE_API_URL}:${NODE_API_PORT}
     ports:
-      - 8080:3000
+      - 8080:80
     depends_on:
       - api
   api:
@@ -38,7 +38,6 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_general_ci
       - --skip-character-set-client-handshake
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       #MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
