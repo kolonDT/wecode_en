@@ -61,10 +61,24 @@ const myCarsInfo = async () => {
 
 // 주행 거리 별 차량 시세 조회
 const priceByDistance = async (carNumber) => {
-  const modelInfo = await carDao.getDistAndPrice(carNumber);
-  const modelName = await modelInfo[0].model_name;
-  const modelYear = await modelInfo[0].model_year;
-  return await carDao.priceByDistance(modelName, modelYear);
+  const checkCarNumber = await carDao.getInfoByCarNumber(carNumber);
+
+  // 입력한 차량 번호와 일치하는 차량이 없을 시 에러
+  if (checkCarNumber.length === 0) {
+    const error = new Error("INVALID_CAR_NUMBER");
+    error.statusCode = 406;
+    throw error;
+  }
+
+  const { model_name, model_year, ...distancdAndPrice } =
+    await carDao.getDistAndPrice(carNumber);
+  const otherCarsInfo = await carDao.priceByDistance(
+    carNumber,
+    model_name,
+    model_year
+  );
+  otherCarsInfo.unshift(distancdAndPrice);
+  return otherCarsInfo;
 };
 
 const deleteRegisteredCar = async (carNumber) => {
