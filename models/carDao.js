@@ -143,20 +143,22 @@ const myCarsInfo = async () => {
 
 // 해당 차량의 모델명, 주행거리, 가격 정보 조회
 const getDistAndPrice = async (carNumber) => {
-  return await prisma.$queryRaw`
-		SELECT model_name, model_year, driving_distance, price_used
+  const distAndPrice = await prisma.$queryRaw`
+		SELECT model_name, model_year, driving_distance AS "index", price_used
 		FROM cars
 		WHERE car_number = ${carNumber}
 	`;
+  return distAndPrice[0];
 };
 
 // 주행 거리 별 차량 시세 조회
-const priceByDistance = async (modelName, modelYear) => {
+const priceByDistance = async (carNumber, modelName, modelYear) => {
   return await prisma.$queryRaw`
 		SELECT driving_distance AS "index", price_used AS tomato
 		FROM cars
 		WHERE model_name = ${modelName}
 		AND model_year = ${modelYear}
+    AND NOT car_number = ${carNumber}
     ORDER BY driving_distance
 	`;
 };

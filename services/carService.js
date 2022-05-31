@@ -61,10 +61,16 @@ const myCarsInfo = async () => {
 
 // 주행 거리 별 차량 시세 조회
 const priceByDistance = async (carNumber) => {
-  const modelInfo = await carDao.getDistAndPrice(carNumber);
-  const modelName = await modelInfo[0].model_name;
-  const modelYear = await modelInfo[0].model_year;
-  return await carDao.priceByDistance(modelName, modelYear);
+  const { model_name, model_year, ...rest } = await carDao.getDistAndPrice(
+    carNumber
+  );
+  const otherCarsInfo = await carDao.priceByDistance(
+    carNumber,
+    model_name,
+    model_year
+  );
+  otherCarsInfo.unshift(rest);
+  return otherCarsInfo;
 };
 
 const deleteRegisteredCar = async (carNumber) => {
@@ -73,6 +79,7 @@ const deleteRegisteredCar = async (carNumber) => {
     await carDao.registeredCarInfoByCarNumber(carNumber);
 
   // 판매 등록 된 차량의 번호와 일치하는 차량이 없을 시 에러
+  console.log(registeredCarInfoByCarNumber);
   if (registeredCarInfoByCarNumber.length === 0) {
     const error = new Error("INVALID_CAR_NUMBER");
     error.statusCode = 406;
