@@ -23,8 +23,8 @@ COPY services/ services/
 COPY models/ models/
 COPY databases/ databases/
 
-# ENV PORT=8000
-# ENV DATABASE_URL=""
+ENV PORT=8000
+ENV DATABASE_URL="mysql://root:dkaghrkanjdi!@10.133.30.30:33306/test01"
 
 ## Run the application on the port 8000
 EXPOSE 8000
