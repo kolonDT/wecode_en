@@ -6,7 +6,7 @@
 - 내 차 팔기 서비스를 제공하는 Kolon X JustCode 프로젝트
 - 개발은 초기 세팅부터 전부 직접 구현했으며,모두 백엔드와 연결하여 dummy data를 이용하여 개발하였습니다.
 - 진행 기간 : 2022.05.06 ~ 2022.06.02
-- [Back-end GitHub 바로가기](https://github.com/kolonDT/202205_wecode_en)
+- [Front-end GitHub 바로가기](https://github.com/kolonDT/202205_wecode_fr)
 
 ## DB modeling
 ![2](https://user-images.githubusercontent.com/21071903/171773721-b6c65832-322d-4090-8aae-7dbf142ff070.png)
