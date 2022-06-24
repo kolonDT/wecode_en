@@ -70,12 +70,13 @@ const priceByDistance = async (carNumber) => {
     throw error;
   }
 
-  const { model_name, model_year, ...distancdAndPrice } =
+  const { model_name, model_year, brand, ...distancdAndPrice } =
     await carDao.getDistAndPrice(carNumber);
   const otherCarsInfo = await carDao.priceByDistance(
     carNumber,
     model_name,
-    model_year
+    model_year,
+    brand
   );
   otherCarsInfo.unshift(distancdAndPrice);
   return otherCarsInfo;
