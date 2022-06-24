@@ -152,12 +152,13 @@ const getDistAndPrice = async (carNumber) => {
 };
 
 // 주행 거리 별 차량 시세 조회
-const priceByDistance = async (carNumber, modelName, modelYear) => {
+const priceByDistance = async (carNumber, modelName, modelYear, brand) => {
   return await prisma.$queryRaw`
 		SELECT driving_distance AS "index", price_used AS tomato
 		FROM cars
 		WHERE model_name = ${modelName}
 		AND model_year = ${modelYear}
+    AND brand = ${brand}
     AND NOT car_number = ${carNumber}
     ORDER BY driving_distance
 	`;
